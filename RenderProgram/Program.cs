@@ -3,20 +3,20 @@
     internal class Program
     {
         private static bool IsRunning { get; set; } = true;
-        private static Menu CurrentMenu { get; set; }
         private static string AppSettingsFilePath { get; } = "AppSettings.json";
+        private static Menu CurrentMenu { get; set; }
         private static AppSettings Settings { get; set; }
         static void Main(string[] args)
         {
             Settings = JSONDeserializer.ReadSettings(AppSettingsFilePath);
-            CurrentMenu = Settings.Menus.FirstOrDefault(menu => menu.Id == 0);
+            ChangeMenu(0);
 
             while (IsRunning)
             {
                 WriteMenu(CurrentMenu);
                 string? input = Console.ReadLine();
 
-                
+
             }
         }
         private static void WriteMenu(Menu menu)
@@ -37,6 +37,11 @@
                     Console.WriteLine($"{menuOption.Id}: {menuOption.Text}");
                 }
             }
+        }
+
+        public static void ChangeMenu(int menuId)
+        {
+            CurrentMenu = Settings.Menus.FirstOrDefault(menu => menu.Id == menuId);
         }
     }
 }
