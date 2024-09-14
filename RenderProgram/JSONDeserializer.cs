@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +34,7 @@ namespace RenderProgram
         public Text Text { get; set; }
     }
 
-    public class Paramater
+    public class Parameter
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -45,13 +45,13 @@ namespace RenderProgram
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Paramater> Paramaters { get; set; }
+        public List<Paremater> Parameters { get; set; }
     }
 
     public class AppSettings
     {
         public List<Menu> Menus { get; set; }
         public List<Shape> Shapes { get; set; }
-        public List<Paramater> GeneraParamaters { get; set; }
+        public List<Paremater> GeneralParameters { get; set; }
     }
 }
