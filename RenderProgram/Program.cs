@@ -2,9 +2,23 @@
 {
     internal class Program
     {
+        private static bool IsRunning { get; set; } = true;
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            while (IsRunning)
+            {
+                WriteMenu();
+                string? input = Console.ReadLine();
+
+                switch (input)
+                {
+                    //menu
+                }
+            }
+        }
+        private static void WriteMenu()
+        {
+
         }
     }
 }
