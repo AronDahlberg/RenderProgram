@@ -1,4 +1,4 @@
-﻿namespace RenderProgram
+namespace RenderProgram
 {
     internal class Program
     {
@@ -55,6 +55,18 @@
                 foreach (var shape in Settings.Shapes)
                 {
                     Console.WriteLine($"{shape.Id}: {shape.Name}");
+                }
+            }
+
+            if (menu.Name == "Parameters Menu")
+            {
+                foreach (var parameter in Settings.GeneralParameters)
+                {
+                    Console.WriteLine($"{parameter.Id}: {parameter.Name} = {parameter.Value}");
+                }
+                foreach (var parameter in CurrentShape.parameters)
+                {
+                    Console.WriteLine($"{parameter.Id}: {parameter.Name} = {parameter.Value}");
                 }
             }
         }
