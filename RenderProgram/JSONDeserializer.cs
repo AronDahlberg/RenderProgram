@@ -34,8 +34,23 @@ namespace RenderProgram
         public Text Text { get; set; }
     }
 
+    public class Paramaters
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public double Value { get; set; }
+    }
+
+    public class Shapes
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public List<Paramaters> Paramaters { get; set; }
+    }
+
     public class AppSettings
     {
         public List<Menu> Menus { get; set; }
+        public List<Shapes> Shapes { get; set; }
     }
 }
