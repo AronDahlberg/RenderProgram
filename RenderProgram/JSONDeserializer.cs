@@ -18,6 +18,7 @@ namespace RenderProgram
     {
         public int Id { get; set; }
         public string Text { get; set; }
+        public int MenuSwitch {  get; set; }
     }
 
     public class Text
