@@ -14,9 +14,19 @@
             while (IsRunning)
             {
                 WriteMenu(CurrentMenu);
-                string? input = Console.ReadLine();
+                int input = int.Parse(Console.ReadLine());
 
+                if (CurrentMenu.Name == "Main Menu")
+                {
+                    switch (input)
+                    {
+                        case 0: IsRunning = false; break;
 
+                        case 1: Render.Run(); break;
+
+                        default: ChangeMenu(CurrentMenu.Text.Options.FirstOrDefault(menu => menu.Id == input).MenuSwitch); break;
+                    }
+                }
             }
         }
         private static void WriteMenu(Menu menu)
