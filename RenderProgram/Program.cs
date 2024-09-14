@@ -5,11 +5,13 @@
         private static bool IsRunning { get; set; } = true;
         private static string AppSettingsFilePath { get; } = "AppSettings.json";
         private static Menu CurrentMenu { get; set; }
+        private static Shape CurrentShape { get; set; }
         private static AppSettings Settings { get; set; }
         static void Main(string[] args)
         {
             Settings = JSONDeserializer.ReadSettings(AppSettingsFilePath);
             ChangeMenu(0);
+            ChangeShape(1);
 
             while (IsRunning)
             {
@@ -47,11 +49,24 @@
                     Console.WriteLine($"{menuOption.Id}: {menuOption.Text}");
                 }
             }
+
+            if (menu.Name == "Shapes Menu")
+            {
+                foreach (var shape in Settings.Shapes)
+                {
+                    Console.WriteLine($"{shape.Id}: {shape.Name}");
+                }
+            }
         }
 
         public static void ChangeMenu(int menuId)
         {
             CurrentMenu = Settings.Menus.FirstOrDefault(menu => menu.Id == menuId);
+        }
+
+        public static void ChangeShape(int shapeId)
+        {
+            CurrentShape = Settings.Shapes.FirstOrDefault(shape => shape.Id == shapeId);
         }
     }
 }

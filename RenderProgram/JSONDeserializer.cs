@@ -41,7 +41,7 @@ namespace RenderProgram
         public double Value { get; set; }
     }
 
-    public class Shapes
+    public class Shape
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -51,6 +51,6 @@ namespace RenderProgram
     public class AppSettings
     {
         public List<Menu> Menus { get; set; }
-        public List<Shapes> Shapes { get; set; }
+        public List<Shape> Shapes { get; set; }
     }
 }
