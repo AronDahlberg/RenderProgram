@@ -34,7 +34,7 @@ namespace RenderProgram
         public Text Text { get; set; }
     }
 
-    public class Paramaters
+    public class Paramater
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -45,12 +45,13 @@ namespace RenderProgram
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Paramaters> Paramaters { get; set; }
+        public List<Paramater> Paramaters { get; set; }
     }
 
     public class AppSettings
     {
         public List<Menu> Menus { get; set; }
         public List<Shape> Shapes { get; set; }
+        public List<Paramater> GeneraParamaters { get; set; }
     }
 }
