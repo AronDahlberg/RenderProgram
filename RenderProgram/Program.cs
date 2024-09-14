@@ -4,9 +4,12 @@
     {
         private static bool IsRunning { get; set; } = true;
         private static int CurrentMenu { get; set; } = 0;
+        private static string AppSettingsFilePath { get; } = "Dependencies/AppSettings.json";
         private static AppSettings Settings { get; set; }
         static void Main(string[] args)
         {
+            Settings = JSONDeserializer.ReadSettings(AppSettingsFilePath);
+
             while (IsRunning)
             {
                 WriteMenu(CurrentMenu);
