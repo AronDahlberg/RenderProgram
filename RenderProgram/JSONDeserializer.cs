@@ -22,8 +22,8 @@ namespace RenderProgram
 
     public class Text
     {
-        public List<Option> Options { get; set; }
         public string Header { get; set; }
+        public List<Option> Options { get; set; }
     }
 
     public class Menu
