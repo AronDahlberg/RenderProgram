@@ -13,8 +13,8 @@ namespace RenderProgram
         private static double FrameTime { get; set; }
         private static AutoResetEvent TimingSignal { get; } = new(false);
         private static Stopwatch Watch { get; } = new();
-        private static int screenWidth { get; set; }
-        private static int screenHeight { get; set; }
+        private static int ScreenWidth { get; set; }
+        private static int ScreenHeight { get; set; }
         public static async void Run()
         {
             IsRunning = true;
@@ -50,8 +50,8 @@ namespace RenderProgram
                 // Wait for the timing signal to start the next frame
                 TimingSignal.WaitOne();
 
-                screenWidth = Console.WindowWidth;
-                screenHeight = Console.WindowHeight;
+                ScreenWidth = Console.WindowWidth;
+                ScreenHeight = Console.WindowHeight;
 
                 a += aIntervall;
                 b += bIntervall;
@@ -104,8 +104,8 @@ namespace RenderProgram
         }
         private static void RenderFrame(double a, double b, double thetaIntervall, double phiIntervall, double radii1, double radii2, double cameraDistance)
         {
-            string[] frameArray = new string[screenWidth * screenHeight];
-            double[] zbufferArray = new double[screenWidth * screenHeight];
+            string[] frameArray = new string[ScreenWidth * ScreenHeight];
+            double[] zbufferArray = new double[ScreenWidth * ScreenHeight];
 
             Span<string> Frame = frameArray.AsSpan();
             Span<double> zbuffer = zbufferArray.AsSpan();
@@ -116,7 +116,7 @@ namespace RenderProgram
             double sinA = Math.Sin(a), cosA = Math.Cos(a);
             double sinB = Math.Sin(b), cosB = Math.Cos(b);
 
-            double distance1 = screenHeight * cameraDistance * 3 / (8 * (radii1 + radii2));
+            double distance1 = ScreenHeight * cameraDistance * 3 / (8 * (radii1 + radii2));
 
             for (double theta = 0; theta < 2 * Math.PI; theta += thetaIntervall)
             {
@@ -137,17 +137,17 @@ namespace RenderProgram
 
                     double distance1xOoz = distance1 * ooz;
 
-                    int xProjection = (int)(screenWidth / 2 + (distance1xOoz * x));
-                    int yProjection = (int)(screenHeight / 2 - (distance1xOoz * y));
+                    int xProjection = (int)(ScreenWidth / 2 + (distance1xOoz * x));
+                    int yProjection = (int)(ScreenHeight / 2 - (distance1xOoz * y));
 
                     double luminance = cosPhi * cosTheta * sinB - cosA * cosTheta * sinPhi - sinA * sinTheta +
                         cosB * (cosA * sinTheta - cosTheta * sinA * sinPhi);
 
 
-                    if (xProjection >= 0 && xProjection < screenWidth && yProjection >= 0 &&
-                        yProjection < screenHeight)
+                    if (xProjection >= 0 && xProjection < ScreenWidth && yProjection >= 0 &&
+                        yProjection < ScreenHeight)
                     {
-                        int index = xProjection + yProjection * screenWidth;
+                        int index = xProjection + yProjection * ScreenWidth;
 
                         if (ooz > zbuffer[index])
                         {
@@ -165,11 +165,11 @@ namespace RenderProgram
 
             outputString.Append("\x1b[H");
 
-            for (int j = 0; j < screenHeight; j++)
+            for (int j = 0; j < ScreenHeight; j++)
             {
-                for (int i = 0; i < screenWidth; i++)
+                for (int i = 0; i < ScreenWidth; i++)
                 {
-                    outputString.Append(Frame[i + j * screenWidth]);
+                    outputString.Append(Frame[i + j * ScreenWidth]);
                 }
                 outputString.Append('\n');
             }
