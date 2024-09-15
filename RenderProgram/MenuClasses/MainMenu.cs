@@ -10,13 +10,15 @@ namespace RenderProgram.MenuClasses
     {
         public static void ExecuteMenuAction(string input)
         {
-            switch (int.Parse(input))
+            int command = int.Parse(input);
+
+            switch (command)
             {
                 case 0: Program.Exit(); break;
 
                 //case 1: Render.Run(); break;
 
-                default: Program.ChangeMenu(Program.CurrentMenu.Text.Options.FirstOrDefault(menu => menu.Id == input).MenuSwitch); break;
+                default: Program.ChangeMenu(Program.CurrentMenu.Text.Options.FirstOrDefault(menu => menu.Id == command).MenuSwitch); break;
             }
         }
     }
