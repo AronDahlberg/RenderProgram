@@ -44,15 +44,12 @@ namespace RenderProgram.ShapeClasses
                     double circleY = Radii1 * sinTheta;
 
                     double x = circleX * (cosB * cosPhi + sinA * sinB * sinPhi) - circleY * cosA * sinB;
-                    double y = circleX * (sinB * cosPhi - sinA * cosB * sinPhi)
-                      + circleY * cosA * cosB;
+                    double y = circleX * (sinB * cosPhi - sinA * cosB * sinPhi) + circleY * cosA * cosB;
                     double z = Render.CameraDistance + cosA * circleX * sinPhi + circleY * sinA;
-                    double ooz = 1 / z;
+                    double ooz = 1 / z; // one over z
 
-                    double distance1xOoz = distance1 * ooz;
-
-                    int xProjection = (int)(Render.ScreenWidth / 2 + (distance1xOoz * x));
-                    int yProjection = (int)(Render.ScreenHeight / 2 - (distance1xOoz * y));
+                    int xProjection = (int)(Render.ScreenWidth / 2 + distance1 * ooz * x);
+                    int yProjection = (int)(Render.ScreenHeight / 2 - distance1 * ooz * y);
 
                     double luminance = cosPhi * cosTheta * sinB - cosA * cosTheta * sinPhi - sinA * sinTheta +
                         cosB * (cosA * sinTheta - cosTheta * sinA * sinPhi);
