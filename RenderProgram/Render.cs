@@ -9,13 +9,14 @@ namespace RenderProgram
 {
     internal static class Render
     {
-        private static bool IsRunning { get; set; } = true;
+        private static bool IsRunning { get; set; }
         private static double FrameTime { get; set; }
         private static AutoResetEvent TimingSignal { get; } = new(false);
         private static Stopwatch Watch { get; } = new();
         private static char[,] Frame {  get; set; }
         public static async void Run()
         {
+            IsRunning = true;
             FrameTime = 1000.0 / Program.Settings.GeneralParameters.Parameters.FirstOrDefault(parameter => parameter.Name == "Fps").Value;
 
             Task handleInputTask = Task.Run(() => HandleInput());
@@ -65,6 +66,7 @@ namespace RenderProgram
                     {
                         case ConsoleKey.Escape:
                             IsRunning = false;
+                            TimingSignal.Set();
                             break;
                     }
                 }
@@ -78,7 +80,6 @@ namespace RenderProgram
         }
         private static void PrintFrame()
         {
-
         }
     }
 }
