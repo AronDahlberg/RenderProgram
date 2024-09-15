@@ -31,12 +31,6 @@ namespace RenderProgram
         {
             Console.Clear();
 
-            // Print the header if it exists
-            if (menu.Text?.Header != null)
-            {
-                Console.WriteLine(menu.Text.Header);
-            }
-
             // Print the options if they exist
             if (menu.Text?.Options != null)
             {
