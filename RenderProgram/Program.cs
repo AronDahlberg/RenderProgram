@@ -6,7 +6,7 @@ namespace RenderProgram
     {
         private static bool IsRunning { get; set; } = true;
         private static string AppSettingsFilePath { get; } = "AppSettings.json";
-        private static AppSettings Settings { get; set; }
+        public static AppSettings Settings { get; set; }
         public static Menu CurrentMenu { get; set; }
         public static Shape CurrentShape { get; set; }
         static void Main(string[] args)
@@ -43,24 +43,13 @@ namespace RenderProgram
                 }
             }
 
-            if (menu.Name == "ShapesMenu")
-            {
-                foreach (var shape in Settings.Shapes)
-                {
-                    Console.WriteLine($"{shape.Id}: {shape.Name}");
-                }
-            }
+            // Print anything else if it exists
+            string className = $"RenderProgram.MenuClasses.{menu}";
+            MethodInfo executeMethod = Type.GetType(className).GetMethod("ExecuteMenuAction", BindingFlags.Public | BindingFlags.Static);
 
-            if (menu.Name == "ParametersMenu")
-            {
-                foreach (var parameter in Settings.GeneralParameters)
-                {
-                    Console.WriteLine($"{parameter.Id}: {parameter.Name} = {parameter.Value}");
-                }
-                foreach (var parameter in CurrentShape.Parameters)
-                {
-                    Console.WriteLine($"{parameter.Id}: {parameter.Name} = {parameter.Value}");
-                }
+            if (executeMethod != null)
+            { 
+                executeMethod.Invoke(null, null); 
             }
         }
         private static void ExecuteMenuAction(Menu menu, int input)
