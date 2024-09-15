@@ -53,6 +53,10 @@ namespace RenderProgram
             MethodInfo executeMethod = Type.GetType(menuClass).GetMethod("ExecuteMenuAction", BindingFlags.Public | BindingFlags.Static);
             executeMethod.Invoke(null, new object[] { input });
         }
+        public static void EditSettings(Parameter parameter, double value)
+        {
+            parameter.Value = value;
+        }
         public static void ChangeMenu(int menuId)
         {
             CurrentMenu = Settings.Menus.FirstOrDefault(menu => menu.Id == menuId);
