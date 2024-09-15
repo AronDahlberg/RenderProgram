@@ -6,6 +6,7 @@ namespace RenderProgram
     {
         private static bool IsRunning { get; set; } = true;
         private static string AppSettingsFilePath { get; } = "AppSettings.json";
+        private static string MenuNamespace { get; } = "RenderProgram.MenuClasses";
         public static AppSettings Settings { get; set; }
         public static Menu CurrentMenu { get; set; }
         public static Shape CurrentShape { get; set; }
@@ -17,14 +18,16 @@ namespace RenderProgram
 
             while (IsRunning)
             {
-                WriteMenu(CurrentMenu);
+                string menuClass = $"{MenuNamespace}.{CurrentMenu.Name}";
+
+                WriteMenu(CurrentMenu, menuClass);
 
                 int input = int.Parse(Console.ReadLine());
 
-                ExecuteMenuAction(CurrentMenu, input);
+                ExecuteMenuAction(CurrentMenu, menuClass, input);
             }
         }
-        private static void WriteMenu(Menu menu)
+        private static void WriteMenu(Menu menu, string menuClass)
         {
             Console.Clear();
 
@@ -44,18 +47,16 @@ namespace RenderProgram
             }
 
             // Print anything else if it exists
-            string className = $"RenderProgram.MenuClasses.{menu.Name}";
-            MethodInfo executeMethod = Type.GetType(className).GetMethod("PrintMenu", BindingFlags.Public | BindingFlags.Static);
+            MethodInfo executeMethod = Type.GetType(menuClass).GetMethod("PrintMenu", BindingFlags.Public | BindingFlags.Static);
 
             if (executeMethod != null)
             { 
                 executeMethod.Invoke(null, null); 
             }
         }
-        private static void ExecuteMenuAction(Menu menu, int input)
+        private static void ExecuteMenuAction(Menu menu, string menuClass, int input)
         {
-            string className = $"RenderProgram.MenuClasses.{menu.Name}";
-            MethodInfo executeMethod = Type.GetType(className).GetMethod("ExecuteMenuAction", BindingFlags.Public | BindingFlags.Static);
+            MethodInfo executeMethod = Type.GetType(menuClass).GetMethod("ExecuteMenuAction", BindingFlags.Public | BindingFlags.Static);
             executeMethod.Invoke(null, new object[] { input });
         }
         public static void ChangeMenu(int menuId)
