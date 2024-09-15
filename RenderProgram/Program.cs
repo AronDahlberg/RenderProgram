@@ -44,8 +44,8 @@ namespace RenderProgram
             }
 
             // Print anything else if it exists
-            string className = $"RenderProgram.MenuClasses.{menu}";
-            MethodInfo executeMethod = Type.GetType(className).GetMethod("ExecuteMenuAction", BindingFlags.Public | BindingFlags.Static);
+            string className = $"RenderProgram.MenuClasses.{menu.Name}";
+            MethodInfo executeMethod = Type.GetType(className).GetMethod("PrintMenu", BindingFlags.Public | BindingFlags.Static);
 
             if (executeMethod != null)
             { 
@@ -54,7 +54,7 @@ namespace RenderProgram
         }
         private static void ExecuteMenuAction(Menu menu, int input)
         {
-            string className = $"RenderProgram.MenuClasses.{menu}";
+            string className = $"RenderProgram.MenuClasses.{menu.Name}";
             MethodInfo executeMethod = Type.GetType(className).GetMethod("ExecuteMenuAction", BindingFlags.Public | BindingFlags.Static);
             executeMethod.Invoke(null, new object[] { input });
         }

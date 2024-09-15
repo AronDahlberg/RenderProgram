@@ -14,7 +14,7 @@ namespace RenderProgram.MenuClasses
             {
                 case 0: Program.Exit(); break;
 
-                case 1: Render.Run(); break;
+                case 1: //Render.Run(); break;
 
                 default: Program.ChangeMenu(Program.CurrentMenu.Text.Options.FirstOrDefault(menu => menu.Id == input).MenuSwitch); break;
             }
