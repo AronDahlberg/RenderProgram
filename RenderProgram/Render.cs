@@ -87,6 +87,7 @@ namespace RenderProgram
         {
             string outputString = "";
             string str;
+            char c;
 
             outputString += "\x1b[H";
 
@@ -95,7 +96,8 @@ namespace RenderProgram
                 for (int i = 0; i < screenWidth; i++)
                 {
                     str = Frame[i, j];
-                    outputString += str;
+                    c = str[0]
+                    outputString += $"\x1b[28:2:{}:{}:{}m{c}\x1b[m";
                 }
                 outputString += "\n";
             }
