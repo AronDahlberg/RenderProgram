@@ -37,7 +37,10 @@ namespace RenderProgram
             FrameTime = 1000.0 / Program.Settings.GeneralParameters.Parameters.FirstOrDefault(parameter => parameter.Name == "Fps").Value;
 
             string objectClass = $"{Program.ShapeNamespace}.{Program.CurrentShape.GetType().Name}";
-            MethodInfo RenderObjectMethod = Type.GetType(objectClass).GetMethod("RenderShape", BindingFlags.Public | BindingFlags.Instance);
+            MethodInfo renderObjectMethod = Type.GetType(objectClass).GetMethod("RenderShape", BindingFlags.Public | BindingFlags.Instance);
+            MethodInfo calculateFocalLenghtMethod = Type.GetType(objectClass).GetMethod("CalculateFocalLenght", BindingFlags.Public | BindingFlags.Instance);
+
+            double? focalLenght = calculateFocalLenghtMethod.Invoke(Program.CurrentShape, null) as double?;
 
             Task handleInputTask = Task.Run(() => HandleInput());
             Task timingTask = Task.Run(() => FPSControlLoop());
@@ -53,7 +56,7 @@ namespace RenderProgram
                 a += AIntervall;
                 b += BIntervall;
 
-                object result = RenderObjectMethod.Invoke(Program.CurrentShape, new object[] { renderQuality, a, b });
+                object result = renderObjectMethod.Invoke(Program.CurrentShape, new object[] { renderQuality, a, b, focalLenght });
 
                 RenderFrame((result as string[]).AsSpan());
             }

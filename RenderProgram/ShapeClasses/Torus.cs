@@ -14,7 +14,7 @@ namespace RenderProgram.ShapeClasses
         public double Radii2 { get; set; } = 2;
         public double ThetaIntervallRaw { get; set; } = 0.7;
         public double PhiIntervallRaw { get; set; } = 0.2;
-        public string[] RenderShape(double renderQuality, double a, double b)
+        public string[] RenderShape(double renderQuality, double a, double b, double focalLenght)
         {
             double ThetaIntervall = ThetaIntervallRaw / renderQuality;
             double PhiIntervall = PhiIntervallRaw / renderQuality;
@@ -30,8 +30,6 @@ namespace RenderProgram.ShapeClasses
 
             double sinA = Math.Sin(a), cosA = Math.Cos(a);
             double sinB = Math.Sin(b), cosB = Math.Cos(b);
-
-            double distance1 = Render.ScreenHeight * Render.CameraDistance * 3 / (8 * (Radii1 + Radii2));
 
             for (double theta = 0; theta < 2 * Math.PI; theta += ThetaIntervall)
             {
@@ -49,8 +47,8 @@ namespace RenderProgram.ShapeClasses
                     double z = Render.CameraDistance + cosA * circleX * sinPhi + circleY * sinA;
                     double ooz = 1 / z; // one over z
 
-                    int xProjection = (int)(Render.ScreenWidth / 2 + distance1 * ooz * x * ConsoleAspectRatio);
-                    int yProjection = (int)(Render.ScreenHeight / 2 - distance1 * ooz * y);
+                    int xProjection = (int)(Render.ScreenWidth / 2 + focalLenght * ooz * x * ConsoleAspectRatio);
+                    int yProjection = (int)(Render.ScreenHeight / 2 - focalLenght * ooz * y);
 
                     double luminance = cosPhi * cosTheta * sinB - cosA * cosTheta * sinPhi - sinA * sinTheta +
                         cosB * (cosA * sinTheta - cosTheta * sinA * sinPhi);
@@ -74,6 +72,10 @@ namespace RenderProgram.ShapeClasses
             }
 
             return output.ToArray();
+        }
+        public double CalculateFocalLenght()
+        {
+            return Render.ScreenHeight * Render.CameraDistance * 3 / (8 * (Radii1 + Radii2));
         }
     }
 }
