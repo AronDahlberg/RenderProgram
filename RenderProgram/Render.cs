@@ -14,7 +14,7 @@ namespace RenderProgram
         private static AutoResetEvent TimingSignal { get; } = new(false);
         private static Stopwatch Watch { get; } = new();
         private static int screenWidth { get; set; }
-        private static int screenHeight {  get; set; }
+        private static int screenHeight { get; set; }
         public static async void Run()
         {
             IsRunning = true;
