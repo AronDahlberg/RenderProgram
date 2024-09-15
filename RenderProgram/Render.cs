@@ -14,6 +14,8 @@ namespace RenderProgram
         private static AutoResetEvent TimingSignal { get; } = new(false);
         private static Stopwatch Watch { get; } = new();
         private static char[,] Frame {  get; set; }
+        private static int screenWidth { get; set; }
+        private static int screenHeight {  get; set; }
         public static async void Run()
         {
             IsRunning = true;
@@ -26,6 +28,9 @@ namespace RenderProgram
             {
                 // Wait for the timing signal to start the next frame
                 TimingSignal.WaitOne();
+
+                screenWidth = Console.WindowWidth;
+                screenHeight = Console.WindowHeight;
 
                 RenderFrame();
                 PrintFrame();
@@ -80,6 +85,22 @@ namespace RenderProgram
         }
         private static void PrintFrame()
         {
+            string outputString = "";
+            char c;
+
+            outputString += "\x1b[H";
+
+            for (int j = 0; j < screenHeight; j++)
+            {
+                for (int i = 0; i < screenWidth; i++)
+                {
+                    c = Frame[i, j];
+                    outputString += c;
+                }
+                outputString += "\n";
+            }
+
+            Console.Write(outputString);
         }
     }
 }
