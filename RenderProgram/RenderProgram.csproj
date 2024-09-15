@@ -13,8 +13,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ShapeClasses\" />
-  </ItemGroup>
-
 </Project>

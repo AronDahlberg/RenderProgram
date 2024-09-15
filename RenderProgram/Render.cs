@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ namespace RenderProgram
         private static Stopwatch Watch { get; } = new();
         private static int ScreenWidth { get; set; }
         private static int ScreenHeight { get; set; }
+        private static string ShapeNamespace { get; } = "RenderProgram.ShapeClasses";
         public static async void Run()
         {
             IsRunning = true;
@@ -42,6 +44,8 @@ namespace RenderProgram
 
             FrameTime = 1000.0 / Program.Settings.GeneralParameters.Parameters.FirstOrDefault(parameter => parameter.Name == "Fps").Value;
 
+            string objectClass = $"{ShapeNamespace}.{Program.CurrentShape.Name}";
+
             Task handleInputTask = Task.Run(() => HandleInput());
             Task timingTask = Task.Run(() => FPSControlLoop());
 
@@ -56,7 +60,12 @@ namespace RenderProgram
                 a += aIntervall;
                 b += bIntervall;
 
-                RenderFrame(a, b, thetaIntervall, phiIntervall, radii1, radii2, cameraDistance);
+                //RenderFrame(a, b, thetaIntervall, phiIntervall, radii1, radii2, cameraDistance);
+                MethodInfo RenderObjectMethod = Type.GetType(objectClass).GetMethod("RenderObject", BindingFlags.Public | BindingFlags.Static);
+                object result = RenderObjectMethod.Invoke(null, null);
+                string[] frameArray = result as string[];
+                Span<string> frame = frameArray.AsSpan();
+                RenderFrame(frame);
             }
 
             // Wait for all tasks to finish
@@ -102,15 +111,15 @@ namespace RenderProgram
                 Thread.Sleep(10);
             }
         }
-        private static void RenderFrame(double a, double b, double thetaIntervall, double phiIntervall, double radii1, double radii2, double cameraDistance)
+        private static void RenderFrameDe(double a, double b, double thetaIntervall, double phiIntervall, double radii1, double radii2, double cameraDistance)
         {
             string[] frameArray = new string[ScreenWidth * ScreenHeight];
             double[] zbufferArray = new double[ScreenWidth * ScreenHeight];
 
-            Span<string> Frame = frameArray.AsSpan();
+            Span<string> frame = frameArray.AsSpan();
             Span<double> zbuffer = zbufferArray.AsSpan();
 
-            Frame.Fill(" ");
+            frame.Fill(" ");
             zbuffer.Fill(0.0);
 
             double sinA = Math.Sin(a), cosA = Math.Cos(a);
@@ -153,7 +162,7 @@ namespace RenderProgram
                         {
                             zbuffer[index] = ooz;
                             int luminanceIndex = (int)(luminance * 8);
-                            Frame[index] = luminanceIndex > 0
+                            frame[index] = luminanceIndex > 0
                                 ? ".,-~:;=!*#$@"[luminanceIndex].ToString()
                                 : ".";
                         }
@@ -169,7 +178,26 @@ namespace RenderProgram
             {
                 for (int i = 0; i < ScreenWidth; i++)
                 {
-                    outputString.Append(Frame[i + j * ScreenWidth]);
+                    outputString.Append(frame[i + j * ScreenWidth]);
+                }
+                outputString.Append('\n');
+            }
+
+            outputString.Length--;
+
+            Console.Write(outputString.ToString());
+        }
+        private static void RenderFrame(Span<string> frame)
+        {
+            StringBuilder outputString = new();
+
+            outputString.Append("\x1b[H");
+
+            for (int j = 0; j < ScreenHeight; j++)
+            {
+                for (int i = 0; i < ScreenWidth; i++)
+                {
+                    outputString.Append(frame[i + j * ScreenWidth]);
                 }
                 outputString.Append('\n');
             }
