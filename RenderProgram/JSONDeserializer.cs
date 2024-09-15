@@ -47,11 +47,14 @@ namespace RenderProgram
         public string Name { get; set; }
         public List<Parameter> Parameters { get; set; }
     }
-
+    public class GeneralParameters
+    {
+        public List<Parameter> Parameters { get; set; }
+    }
     public class AppSettings
     {
         public List<Menu> Menus { get; set; }
         public List<Shape> Shapes { get; set; }
-        public List<Parameter> GeneralParameters { get; set; }
+        public GeneralParameters GeneralParameters { get; set; }
     }
 }
