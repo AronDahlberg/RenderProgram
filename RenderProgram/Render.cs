@@ -19,6 +19,7 @@ namespace RenderProgram
         public static double AIntervall { get; set; }
         public static double BIntervall { get; set; }
         public static double CameraDistance { get; set; }
+        public static double CameraSpeed { get; set; }
         public static async void Run()
         {
             IsRunning = true;
@@ -33,6 +34,7 @@ namespace RenderProgram
             double renderQuality = generalParameters.FirstOrDefault(parameter => parameter.Name == "RenderQuality").Value;
 
             CameraDistance = generalParameters.FirstOrDefault(parameter => parameter.Name == "CameraDistance").Value;
+            CameraSpeed = generalParameters.FirstOrDefault(parameter => parameter.Name == "CameraSpeed").Value;
 
             FrameTime = 1000.0 / Program.Settings.GeneralParameters.Parameters.FirstOrDefault(parameter => parameter.Name == "Fps").Value;
 
@@ -98,6 +100,10 @@ namespace RenderProgram
                             IsRunning = false;
                             TimingSignal.Set();
                             break;
+                        case ConsoleKey.W:
+                            CameraDistance -= CameraSpeed / 100; break;
+                        case ConsoleKey.S:
+                            CameraDistance += CameraSpeed / 100; break;
                     }
                 }
 
