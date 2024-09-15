@@ -22,8 +22,10 @@ namespace RenderProgram
             var generalParameters = Program.Settings.GeneralParameters.Parameters;
             var shapeParameters = Program.CurrentShape.Parameters;
 
-            double a = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedY").Value;
-            double b = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedX").Value;
+            double a = 0.0;
+            double b = 0.0;
+            double aIntervall = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedY").Value;
+            double bIntervall = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedX").Value;
 
             double renderQuality = generalParameters.FirstOrDefault(parameter => parameter.Name == "RenderQuality").Value;
 
@@ -50,6 +52,9 @@ namespace RenderProgram
 
                 screenWidth = Console.WindowWidth;
                 screenHeight = Console.WindowHeight;
+
+                a += aIntervall;
+                b += bIntervall;
 
                 RenderFrame(a, b, thetaIntervall, phiIntervall, radii1, radii2, cameraDistance);
             }
