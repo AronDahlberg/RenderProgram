@@ -23,8 +23,21 @@ namespace RenderProgram.MenuClasses
         }
         public static void ExecuteMenuAction(string input)
         {
+            var splitinput = input.Split(':');
+            int parameterIndex = int.Parse(splitinput[0]);
+            double value = double.Parse(splitinput[1]);
+
+            int generalParametersLenght = Program.Settings.GeneralParameters.Parameters.Count;
             Parameter parameter;
-            double value;
+
+            if (parameterIndex < generalParametersLenght)
+            {
+                parameter = Program.Settings.GeneralParameters.Parameters[parameterIndex];
+            }
+            else
+            {
+                parameter = Program.CurrentShape.Parameters[parameterIndex - generalParametersLenght];
+            }
 
             switch (input)
             {
