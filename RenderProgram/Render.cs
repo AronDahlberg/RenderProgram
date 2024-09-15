@@ -63,7 +63,9 @@ namespace RenderProgram
 
                     switch (key.Key)
                     {
-                        //keybinds
+                        case ConsoleKey.Escape:
+                            IsRunning = false;
+                            break;
                     }
                 }
 
