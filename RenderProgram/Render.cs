@@ -9,7 +9,7 @@ namespace RenderProgram
 {
     internal static class Render
     {
-        private static bool IsRunning { get; set; }
+        private static bool IsRunning { get; set; } = true;
         private static double FrameTime { get; set; }
         private static AutoResetEvent TimingSignal { get; } = new(false);
         private static Stopwatch Watch { get; } = new();
