@@ -16,13 +16,11 @@ namespace RenderProgram
         private static Stopwatch Watch { get; } = new();
         private static int ScreenWidth { get; set; }
         private static int ScreenHeight { get; set; }
-        private static string ShapeNamespace { get; } = "RenderProgram.ShapeClasses";
         public static async void Run()
         {
             IsRunning = true;
 
             var generalParameters = Program.Settings.GeneralParameters.Parameters;
-            var shapeParameters = Program.CurrentShape.Parameters;
 
             double a = 0.0;
             double b = 0.0;
@@ -31,20 +29,12 @@ namespace RenderProgram
 
             double renderQuality = generalParameters.FirstOrDefault(parameter => parameter.Name == "RenderQuality").Value;
 
-            double thetaIntervallRaw = shapeParameters.FirstOrDefault(parameter => parameter.Name == "ThetaIntervall").Value;
-            double phiIntervallRaw = shapeParameters.FirstOrDefault(parameter => parameter.Name == "PhiIntervall").Value;
-
-            double thetaIntervall = thetaIntervallRaw / renderQuality;
-            double phiIntervall = phiIntervallRaw / renderQuality;
-
-            double radii1 = shapeParameters.FirstOrDefault(parameter => parameter.Name == "Radii1").Value;
-            double radii2 = shapeParameters.FirstOrDefault(parameter => parameter.Name == "Radii2").Value;
-
             double cameraDistance = generalParameters.FirstOrDefault(parameter => parameter.Name == "CameraDistance").Value;
 
             FrameTime = 1000.0 / Program.Settings.GeneralParameters.Parameters.FirstOrDefault(parameter => parameter.Name == "Fps").Value;
 
-            string objectClass = $"{ShapeNamespace}.{Program.CurrentShape.Name}";
+            string objectClass = $"{Program.ShapeNamespace}.{Program.CurrentShape.GetType().Name}";
+            MethodInfo RenderObjectMethod = Type.GetType(objectClass).GetMethod("RenderObject", BindingFlags.Public | BindingFlags.Static);
 
             Task handleInputTask = Task.Run(() => HandleInput());
             Task timingTask = Task.Run(() => FPSControlLoop());
@@ -60,12 +50,9 @@ namespace RenderProgram
                 a += aIntervall;
                 b += bIntervall;
 
-                //RenderFrame(a, b, thetaIntervall, phiIntervall, radii1, radii2, cameraDistance);
-                MethodInfo RenderObjectMethod = Type.GetType(objectClass).GetMethod("RenderObject", BindingFlags.Public | BindingFlags.Static);
-                object result = RenderObjectMethod.Invoke(null, null);
-                string[] frameArray = result as string[];
-                Span<string> frame = frameArray.AsSpan();
-                RenderFrame(frame);
+                object result = RenderObjectMethod.Invoke(null, new object[] { renderQuality });
+
+                RenderFrame((result as string[]).AsSpan());
             }
 
             // Wait for all tasks to finish

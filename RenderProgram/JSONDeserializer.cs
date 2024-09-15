@@ -45,7 +45,6 @@ namespace RenderProgram
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Parameter> Parameters { get; set; }
     }
     public class GeneralParameters
     {

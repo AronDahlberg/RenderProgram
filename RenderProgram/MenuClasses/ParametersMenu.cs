@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,9 +19,13 @@ namespace RenderProgram.MenuClasses
             {
                 Console.WriteLine($"{parameter.Id}: {parameter.Name} = {parameter.Value}");
             }
-            foreach (var parameter in Program.CurrentShape.Parameters)
+
+            PropertyInfo[] properties = Program.CurrentShape.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            for (int i = 0; i < properties.Length; i++)
             {
-                Console.WriteLine($"{parameter.Id + generalParametersLenght}: {parameter.Name} = {parameter.Value}");
+                PropertyInfo property = properties[i];
+                Console.WriteLine($"{i + generalParametersLenght}: {property.Name} = {property.GetValue(Program.CurrentShape)}");
             }
         }
         public static void ExecuteMenuAction(string input)
@@ -39,15 +44,13 @@ namespace RenderProgram.MenuClasses
 
                     if (parameterIndex < generalParametersLenght)
                     {
-                        parameter = Program.Settings.GeneralParameters.Parameters[parameterIndex];
+                        Program.Settings.GeneralParameters.Parameters[parameterIndex].Value = value;
                     }
                     else
                     {
-                        parameter = Program.CurrentShape.Parameters[parameterIndex - generalParametersLenght];
+                        PropertyInfo[] properties = Program.CurrentShape.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                        properties[parameterIndex - generalParametersLenght].SetValue(Program.CurrentShape, value);
                     }
-
-                    Program.EditSettings(parameter, value);
-
                     break;
             }
         }
