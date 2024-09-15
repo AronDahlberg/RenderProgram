@@ -30,7 +30,7 @@ namespace RenderProgram.ShapeClasses
             double sinA = Math.Sin(a), cosA = Math.Cos(a);
             double sinB = Math.Sin(b), cosB = Math.Cos(b);
 
-            double distance1 = Render.ScreenWidth * Render.CameraDistance * 3 / (8 * (Radii1 + Radii2));
+            double distance1 = Render.ScreenHeight * Render.CameraDistance * 3 / (8 * (Radii1 + Radii2));
 
             for (double theta = 0; theta < 2 * Math.PI; theta += ThetaIntervall)
             {
