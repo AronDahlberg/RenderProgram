@@ -14,8 +14,11 @@ namespace RenderProgram
         private static double FrameTime { get; set; }
         private static AutoResetEvent TimingSignal { get; } = new(false);
         private static Stopwatch Watch { get; } = new();
-        private static int ScreenWidth { get; set; }
-        private static int ScreenHeight { get; set; }
+        public static int ScreenWidth { get; set; }
+        public static int ScreenHeight { get; set; }
+        public static double AIntervall { get; set; }
+        public static double BIntervall { get; set; }
+        public static double CameraDistance { get; set; }
         public static async void Run()
         {
             IsRunning = true;
@@ -24,17 +27,17 @@ namespace RenderProgram
 
             double a = 0.0;
             double b = 0.0;
-            double aIntervall = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedY").Value;
-            double bIntervall = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedX").Value;
+            AIntervall = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedY").Value;
+            BIntervall = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedX").Value;
 
             double renderQuality = generalParameters.FirstOrDefault(parameter => parameter.Name == "RenderQuality").Value;
 
-            double cameraDistance = generalParameters.FirstOrDefault(parameter => parameter.Name == "CameraDistance").Value;
+            CameraDistance = generalParameters.FirstOrDefault(parameter => parameter.Name == "CameraDistance").Value;
 
             FrameTime = 1000.0 / Program.Settings.GeneralParameters.Parameters.FirstOrDefault(parameter => parameter.Name == "Fps").Value;
 
             string objectClass = $"{Program.ShapeNamespace}.{Program.CurrentShape.GetType().Name}";
-            MethodInfo RenderObjectMethod = Type.GetType(objectClass).GetMethod("RenderObject", BindingFlags.Public | BindingFlags.Static);
+            MethodInfo RenderObjectMethod = Type.GetType(objectClass).GetMethod("RenderShape", BindingFlags.Public | BindingFlags.Instance);
 
             Task handleInputTask = Task.Run(() => HandleInput());
             Task timingTask = Task.Run(() => FPSControlLoop());
@@ -47,10 +50,10 @@ namespace RenderProgram
                 ScreenWidth = Console.WindowWidth;
                 ScreenHeight = Console.WindowHeight;
 
-                a += aIntervall;
-                b += bIntervall;
+                a += AIntervall;
+                b += BIntervall;
 
-                object result = RenderObjectMethod.Invoke(null, new object[] { renderQuality });
+                object result = RenderObjectMethod.Invoke(Program.CurrentShape, new object[] { renderQuality, a, b });
 
                 RenderFrame((result as string[]).AsSpan());
             }
