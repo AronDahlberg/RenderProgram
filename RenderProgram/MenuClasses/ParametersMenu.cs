@@ -23,27 +23,30 @@ namespace RenderProgram.MenuClasses
         }
         public static void ExecuteMenuAction(string input)
         {
-            var splitinput = input.Split(':');
-            int parameterIndex = int.Parse(splitinput[0]);
-            double value = double.Parse(splitinput[1]);
-
-            int generalParametersLenght = Program.Settings.GeneralParameters.Parameters.Count;
-            Parameter parameter;
-
-            if (parameterIndex < generalParametersLenght)
-            {
-                parameter = Program.Settings.GeneralParameters.Parameters[parameterIndex];
-            }
-            else
-            {
-                parameter = Program.CurrentShape.Parameters[parameterIndex - generalParametersLenght];
-            }
-
             switch (input)
             {
                 case "r": Program.ChangeMenu(0); break;
 
-                default: Program.EditSettings(parameter, value); break;
+                default:
+                    var splitinput = input.Split(':');
+                    int parameterIndex = int.Parse(splitinput[0]);
+                    double value = double.Parse(splitinput[1]);
+
+                    int generalParametersLenght = Program.Settings.GeneralParameters.Parameters.Count;
+                    Parameter parameter;
+
+                    if (parameterIndex < generalParametersLenght)
+                    {
+                        parameter = Program.Settings.GeneralParameters.Parameters[parameterIndex];
+                    }
+                    else
+                    {
+                        parameter = Program.CurrentShape.Parameters[parameterIndex - generalParametersLenght];
+                    }
+
+                    Program.EditSettings(parameter, value);
+
+                    break;
             }
         }
     }
