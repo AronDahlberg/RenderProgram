@@ -47,8 +47,8 @@ namespace RenderProgram.ShapeClasses
                     double z = Render.CameraDistance + cosA * circleX * sinPhi + circleY * sinA;
                     double ooz = 1 / z; // one over z
 
-                    int xProjection = (int)(Render.ScreenWidth / 2 + focalLenght * ooz * x * ConsoleAspectRatio);
-                    int yProjection = (int)(Render.ScreenHeight / 2 - focalLenght * ooz * y);
+                    int xProjection = (int)(Render.ScreenWidth / 2 + (Render.ScreenHeight * focalLenght) * ooz * x * ConsoleAspectRatio);
+                    int yProjection = (int)(Render.ScreenHeight / 2 - (Render.ScreenHeight * focalLenght) * ooz * y);
 
                     double luminance = cosPhi * cosTheta * sinB - cosA * cosTheta * sinPhi - sinA * sinTheta +
                         cosB * (cosA * sinTheta - cosTheta * sinA * sinPhi);
@@ -75,7 +75,7 @@ namespace RenderProgram.ShapeClasses
         }
         public double CalculateFocalLenght()
         {
-            return Render.ScreenHeight * Render.CameraDistance * 3 / (8 * (Radii1 + Radii2));
+            return Render.CameraDistance * 3 / (8 * (Radii1 + Radii2));
         }
     }
 }
