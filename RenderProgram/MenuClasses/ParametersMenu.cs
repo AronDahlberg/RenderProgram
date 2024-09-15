@@ -10,6 +10,8 @@ namespace RenderProgram.MenuClasses
     {
         public static void PrintMenu()
         {
+            int generalParametersLenght = Program.Settings.GeneralParameters.Parameters.Count;
+
             Console.WriteLine("r: Return to main menu");
 
             foreach (var parameter in Program.Settings.GeneralParameters.Parameters)
@@ -18,7 +20,7 @@ namespace RenderProgram.MenuClasses
             }
             foreach (var parameter in Program.CurrentShape.Parameters)
             {
-                Console.WriteLine($"{parameter.Id}: {parameter.Name} = {parameter.Value}");
+                Console.WriteLine($"{parameter.Id + generalParametersLenght}: {parameter.Name} = {parameter.Value}");
             }
         }
         public static void ExecuteMenuAction(string input)
