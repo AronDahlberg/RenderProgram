@@ -13,7 +13,6 @@ namespace RenderProgram
         private static double FrameTime { get; set; }
         private static AutoResetEvent TimingSignal { get; } = new(false);
         private static Stopwatch Watch { get; } = new();
-        private static string[,] Frame {  get; set; }
         private static int screenWidth { get; set; }
         private static int screenHeight {  get; set; }
         public static async void Run()
@@ -33,7 +32,6 @@ namespace RenderProgram
                 screenHeight = Console.WindowHeight;
 
                 RenderFrame();
-                PrintFrame();
             }
 
             // Wait for all tasks to finish
@@ -81,10 +79,8 @@ namespace RenderProgram
         }
         private static void RenderFrame()
         {
+            string[,] Frame = new string[screenWidth, screenHeight];
 
-        }
-        private static void PrintFrame()
-        {
             StringBuilder outputString = new();
 
             outputString.Append("\x1b[H");
