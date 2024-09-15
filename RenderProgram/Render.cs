@@ -174,6 +174,8 @@ namespace RenderProgram
                 outputString.Append('\n');
             }
 
+            outputString.Length--;
+
             Console.Write(outputString.ToString());
         }
     }
