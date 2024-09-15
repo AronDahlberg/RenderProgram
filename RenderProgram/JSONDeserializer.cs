@@ -45,13 +45,13 @@ namespace RenderProgram
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Paremater> Parameters { get; set; }
+        public List<Parameter> Parameters { get; set; }
     }
 
     public class AppSettings
     {
         public List<Menu> Menus { get; set; }
         public List<Shape> Shapes { get; set; }
-        public List<Paremater> GeneralParameters { get; set; }
+        public List<Parameter> GeneralParameters { get; set; }
     }
 }

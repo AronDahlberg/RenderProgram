@@ -64,7 +64,7 @@ namespace RenderProgram
                 {
                     Console.WriteLine($"{parameter.Id}: {parameter.Name} = {parameter.Value}");
                 }
-                foreach (var parameter in CurrentShape.parameters)
+                foreach (var parameter in CurrentShape.Parameters)
                 {
                     Console.WriteLine($"{parameter.Id}: {parameter.Name} = {parameter.Value}");
                 }
