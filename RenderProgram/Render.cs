@@ -86,8 +86,6 @@ namespace RenderProgram
         private static void PrintFrame()
         {
             string outputString = "";
-            string str;
-            char c;
 
             outputString += "\x1b[H";
 
@@ -95,9 +93,7 @@ namespace RenderProgram
             {
                 for (int i = 0; i < screenWidth; i++)
                 {
-                    str = Frame[i, j];
-                    c = str[0]
-                    outputString += $"\x1b[28:2:{}:{}:{}m{c}\x1b[m";
+                    outputString += Frame[i, j];
                 }
                 outputString += "\n";
             }
