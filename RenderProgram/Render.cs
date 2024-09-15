@@ -85,20 +85,20 @@ namespace RenderProgram
         }
         private static void PrintFrame()
         {
-            string outputString = "";
+            StringBuilder outputString = new();
 
-            outputString += "\x1b[H";
+            outputString.Append("\x1b[H");
 
-            for (int j = 0; j < screenHeight; j++)
+            for (int j = 0; j < Frame.GetLength(0); j++)
             {
-                for (int i = 0; i < screenWidth; i++)
+                for (int i = 0; i < Frame.GetLength(1); i++)
                 {
-                    outputString += Frame[i, j];
+                    outputString.Append(Frame[i, j]);
                 }
-                outputString += "\n";
+                outputString.Append('\n');
             }
 
-            Console.Write(outputString);
+            Console.Write(outputString.ToString());
         }
     }
 }
