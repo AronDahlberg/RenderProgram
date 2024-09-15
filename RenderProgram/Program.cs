@@ -22,7 +22,7 @@ namespace RenderProgram
 
                 WriteMenu(CurrentMenu, menuClass);
 
-                int input = int.Parse(Console.ReadLine());
+                string input = Console.ReadLine();
 
                 ExecuteMenuAction(CurrentMenu, menuClass, input);
             }
@@ -54,7 +54,7 @@ namespace RenderProgram
                 executeMethod.Invoke(null, null); 
             }
         }
-        private static void ExecuteMenuAction(Menu menu, string menuClass, int input)
+        private static void ExecuteMenuAction(Menu menu, string menuClass, string input)
         {
             MethodInfo executeMethod = Type.GetType(menuClass).GetMethod("ExecuteMenuAction", BindingFlags.Public | BindingFlags.Static);
             executeMethod.Invoke(null, new object[] { input });

@@ -8,9 +8,9 @@ namespace RenderProgram.MenuClasses
 {
     internal static class MainMenu
     {
-        public static void ExecuteMenuAction(int input)
+        public static void ExecuteMenuAction(string input)
         {
-            switch (input)
+            switch (int.Parse(input))
             {
                 case 0: Program.Exit(); break;
 
