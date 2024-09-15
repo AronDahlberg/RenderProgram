@@ -10,6 +10,8 @@ namespace RenderProgram.MenuClasses
     {
         public static void PrintMenu()
         {
+            Console.WriteLine("r: Return to main menu");
+
             foreach (var parameter in Program.Settings.GeneralParameters)
             {
                 Console.WriteLine($"{parameter.Id}: {parameter.Name} = {parameter.Value}");

@@ -10,6 +10,8 @@ namespace RenderProgram.MenuClasses
     {
         public static void PrintMenu()
         {
+            Console.WriteLine("r: Return to main menu");
+
             foreach (var shape in Program.Settings.Shapes)
             {
                 Console.WriteLine($"{shape.Id}: {shape.Name}");
