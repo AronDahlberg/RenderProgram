@@ -26,6 +26,8 @@ namespace RenderProgram
 
                 ExecuteMenuAction(CurrentMenu, menuClass, input);
             }
+
+            Console.Clear();
         }
         private static void WriteMenu(Menu menu, string menuClass)
         {
