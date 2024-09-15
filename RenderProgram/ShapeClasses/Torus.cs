@@ -9,6 +9,7 @@ namespace RenderProgram.ShapeClasses
 {
     internal class Torus
     {
+        private double ConsoleAspectRatio { get; set; } = 2;
         public double Radii1 { get; set; } = 1;
         public double Radii2 { get; set; } = 2;
         public double ThetaIntervallRaw { get; set; } = 0.7;
@@ -48,7 +49,7 @@ namespace RenderProgram.ShapeClasses
                     double z = Render.CameraDistance + cosA * circleX * sinPhi + circleY * sinA;
                     double ooz = 1 / z; // one over z
 
-                    int xProjection = (int)(Render.ScreenWidth / 2 + distance1 * ooz * x);
+                    int xProjection = (int)(Render.ScreenWidth / 2 + distance1 * ooz * x * ConsoleAspectRatio);
                     int yProjection = (int)(Render.ScreenHeight / 2 - distance1 * ooz * y);
 
                     double luminance = cosPhi * cosTheta * sinB - cosA * cosTheta * sinPhi - sinA * sinTheta +
