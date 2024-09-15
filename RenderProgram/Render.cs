@@ -105,8 +105,8 @@ namespace RenderProgram
             Span<string> Frame = frameArray.AsSpan();
             Span<double> zbuffer = zbufferArray.AsSpan();
 
-            MatrixHandler.InitCharMatrix(Frame, ' ');
-            MatrixHandler.InitDoubleMatrix(zbuffer, 0.0f);
+            Frame.Fill(" ");
+            zbuffer.Fill(0.0);
 
             double sinA = Math.Sin(a), cosA = Math.Cos(a);
             double sinB = Math.Sin(b), cosB = Math.Cos(b);
