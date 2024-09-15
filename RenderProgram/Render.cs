@@ -27,8 +27,8 @@ namespace RenderProgram
 
             double renderQuality = generalParameters.FirstOrDefault(parameter => parameter.Name == "RenderQuality").Value;
 
-            double thetaIntervallRaw = shapeParameters.FirstOrDefault(parameter => parameter.Name == "thetaIntervall").Value;
-            double phiIntervallRaw = shapeParameters.FirstOrDefault(parameter => parameter.Name == "phiIntervall").Value;
+            double thetaIntervallRaw = shapeParameters.FirstOrDefault(parameter => parameter.Name == "ThetaIntervall").Value;
+            double phiIntervallRaw = shapeParameters.FirstOrDefault(parameter => parameter.Name == "PhiIntervall").Value;
 
             double thetaIntervall = thetaIntervallRaw / renderQuality;
             double phiIntervall = phiIntervallRaw / renderQuality;
