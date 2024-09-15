@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace RenderProgram
         private static double FrameTime { get; set; }
         private static AutoResetEvent TimingSignal { get; } = new(false);
         private static Stopwatch Watch { get; } = new();
-        private static char[,] Frame {  get; set; }
+        private static string[,] Frame {  get; set; }
         private static int screenWidth { get; set; }
         private static int screenHeight {  get; set; }
         public static async void Run()
@@ -86,7 +86,7 @@ namespace RenderProgram
         private static void PrintFrame()
         {
             string outputString = "";
-            char c;
+            string str;
 
             outputString += "\x1b[H";
 
@@ -94,8 +94,8 @@ namespace RenderProgram
             {
                 for (int i = 0; i < screenWidth; i++)
                 {
-                    c = Frame[i, j];
-                    outputString += c;
+                    str = Frame[i, j];
+                    outputString += str;
                 }
                 outputString += "\n";
             }
