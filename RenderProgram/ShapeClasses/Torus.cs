@@ -70,9 +70,9 @@ namespace RenderProgram.ShapeClasses
                         {
                             zbuffer[index] = ooz;
 
-                            string charString = ".,-~:;=!*#$@";
+                            string charString = "  ....,,,,--~~~::;=!*#$@";
 
-                            int luminanceIndex = (int)((luminance + sqrt2) * 3.8890); // 3.8890 = charString.Length / (2* Sqrt(2))
+                            int luminanceIndex = (int)((luminance + sqrt2) * 8.48); // 8.48 = charString.Length / (2* Sqrt(2))
 
                             output[index] = charString[luminanceIndex].ToString();
                         }
