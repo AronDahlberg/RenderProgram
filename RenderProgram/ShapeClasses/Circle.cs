@@ -44,7 +44,7 @@ namespace RenderProgram.ShapeClasses
                 {
                     double sinPhi = Math.Sin(phi), cosPhi = Math.Cos(phi);
 
-                    double circleX = Radii * 2 * cosTheta;
+                    double circleX = Radii * cosTheta;
                     double circleY = Radii * sinTheta;
 
                     double x = circleX * (cosB * cosPhi + sinA * sinB * sinPhi) - circleY * cosA * sinB;
@@ -81,7 +81,7 @@ namespace RenderProgram.ShapeClasses
         public double CalculateFocalLenght()
         {
             // Focal lenght set so that the object fills 2/3 of the screen at the start of rendering
-            return Render.CameraDistance * 3 / (8 * (Radii * 2));
+            return Render.CameraDistance * 3 / (8 * (Radii));
         }
     }
 }
