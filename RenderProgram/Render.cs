@@ -135,9 +135,6 @@ namespace RenderProgram
             // Remove trailing '\n'
             outputString.Length--;
 
-            // Remove any graphical effect for next frame
-            outputString.Append("\x1b[m");
-
             Console.Write(outputString.ToString());
         }
     }
