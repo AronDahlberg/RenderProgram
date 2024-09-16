@@ -63,6 +63,9 @@ namespace RenderProgram
                 PrintFrame((result as string[]).AsSpan());
             }
 
+            // Clear everything
+            Console.Write("\x1b[m\x1b[2J\x1b[H");
+
             // Wait for all tasks to finish
             await Task.WhenAll(handleInputTask,  timingTask);
         }
