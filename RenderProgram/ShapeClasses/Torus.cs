@@ -16,9 +16,11 @@ namespace RenderProgram.ShapeClasses
         public double PhiIntervallRaw { get; set; } = 0.2;
         public string[] RenderShape(double renderQuality, double a, double b, double focalLenght)
         {
+            // Larger renderQuality = more plotted points
             double ThetaIntervall = ThetaIntervallRaw / renderQuality;
             double PhiIntervall = PhiIntervallRaw / renderQuality;
 
+            // 2D matrix as 1D array
             string[] outputArray = new string[Render.ScreenWidth * Render.ScreenHeight];
             double[] zbufferArray = new double[Render.ScreenWidth * Render.ScreenHeight];
 
@@ -30,6 +32,8 @@ namespace RenderProgram.ShapeClasses
 
             double sinA = Math.Sin(a), cosA = Math.Cos(a);
             double sinB = Math.Sin(b), cosB = Math.Cos(b);
+
+            double sqrt2 = Math.Sqrt(2);
 
             for (double theta = 0; theta < 2 * Math.PI; theta += ThetaIntervall)
             {
@@ -57,15 +61,17 @@ namespace RenderProgram.ShapeClasses
                     if (xProjection >= 0 && xProjection < Render.ScreenWidth && yProjection >= 0 &&
                         yProjection < Render.ScreenHeight)
                     {
-                        int index = xProjection + yProjection * Render.ScreenWidth;
+                        int index = xProjection + yProjection * Render.ScreenWidth; 
 
                         if (ooz > zbuffer[index])
                         {
                             zbuffer[index] = ooz;
-                            int luminanceIndex = (int)(luminance * 8);
-                            output[index] = luminanceIndex > 0
-                                ? ".,-~:;=!*#$@"[luminanceIndex].ToString()
-                                : ".";
+
+                            string charString = ".,-~:;=!*#$@";
+
+                            int luminanceIndex = (int)((luminance + sqrt2) * 3.8890); // 3.8890 = charString.Length / (2* Sqrt(2))
+
+                            output[index] = charString[luminanceIndex].ToString();
                         }
                     }
                 }
@@ -75,7 +81,8 @@ namespace RenderProgram.ShapeClasses
         }
         public double CalculateFocalLenght()
         {
-            return Render.CameraDistance * 3 / (8 * (Radii1 + Radii2));
+            // Focal lenght set so that the object fills 2/3 of the screen at the start of rendering
+            return Render.CameraDistance * 3 / (8 * (Radii1 + Radii2)); 
         }
     }
 }
