@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RenderProgram
 {
@@ -27,6 +23,7 @@ namespace RenderProgram
         {
             IsRunning = true;
 
+            // Find all parameters from the json file
             var generalParameters = Program.Settings.GeneralParameters.Parameters;
 
             AIntervall = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedY").Value;
@@ -42,6 +39,7 @@ namespace RenderProgram
             string objectClass = $"{Program.ShapeNamespace}.{Program.CurrentShape.GetType().Name}";
             MethodInfo renderObjectMethod = Type.GetType(objectClass).GetMethod("RenderShape", BindingFlags.Public | BindingFlags.Instance);
             MethodInfo calculateFocalLenghtMethod = Type.GetType(objectClass).GetMethod("CalculateFocalLenght", BindingFlags.Public | BindingFlags.Instance);
+
 
             double? focalLenght = calculateFocalLenghtMethod.Invoke(Program.CurrentShape, null) as double?;
 
@@ -59,9 +57,10 @@ namespace RenderProgram
                 A += AIntervall;
                 B += BIntervall;
 
+                // Render object and frame
                 object result = renderObjectMethod.Invoke(Program.CurrentShape, new object[] { renderQuality, A, B, Alpha, focalLenght });
 
-                RenderFrame((result as string[]).AsSpan());
+                PrintFrame((result as string[]).AsSpan());
             }
 
             // Wait for all tasks to finish
@@ -105,10 +104,10 @@ namespace RenderProgram
                             CameraDistance -= CameraSpeed / 100; break;
                         case ConsoleKey.S:
                             CameraDistance += CameraSpeed / 100; break;
-                        case ConsoleKey.A:
+                        case ConsoleKey.A: // Move light source to the left
                             Alpha += CameraSpeed / 200;
                             break;
-                        case ConsoleKey.D:
+                        case ConsoleKey.D: // Move light source to the right
                             Alpha -= CameraSpeed / 200;
                             break;
                     }
@@ -117,12 +116,13 @@ namespace RenderProgram
                 Thread.Sleep(10);
             }
         }
-        private static void RenderFrame(Span<string> frame)
+        private static void PrintFrame(Span<string> frame)
         {
             StringBuilder outputString = new();
 
             outputString.Append("\x1b[H");
 
+            // Extract all values into stringbuilder
             for (int j = 0; j < ScreenHeight; j++)
             {
                 for (int i = 0; i < ScreenWidth; i++)
@@ -132,8 +132,10 @@ namespace RenderProgram
                 outputString.Append('\n');
             }
 
+            // Remove trailing '\n'
             outputString.Length--;
 
+            // Remove any graphical effect for next frame
             outputString.Append("\x1b[m");
 
             Console.Write(outputString.ToString());

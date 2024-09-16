@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 
 namespace RenderProgram.MenuClasses
 {
@@ -15,11 +10,13 @@ namespace RenderProgram.MenuClasses
 
             Console.WriteLine("r: Return to main menu");
 
+            // Write all non-object specific paramaters
             foreach (var parameter in Program.Settings.GeneralParameters.Parameters)
             {
                 Console.WriteLine($"{parameter.Id}: {parameter.Name} = {parameter.Value}");
             }
 
+            // Find and write all object specific paramaters
             PropertyInfo[] properties = Program.CurrentShape.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
             for (int i = 0; i < properties.Length; i++)
@@ -42,6 +39,7 @@ namespace RenderProgram.MenuClasses
                     int generalParametersLenght = Program.Settings.GeneralParameters.Parameters.Count;
                     Parameter parameter;
 
+                    // Editing paramaters depening on if index falls within range of non-object specific paramaters (general paramaters)
                     if (parameterIndex < generalParametersLenght)
                     {
                         Program.Settings.GeneralParameters.Parameters[parameterIndex].Value = value;

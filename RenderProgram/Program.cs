@@ -1,4 +1,3 @@
-using RenderProgram.ShapeClasses;
 using System.Reflection;
 
 namespace RenderProgram
@@ -15,6 +14,8 @@ namespace RenderProgram
         static void Main(string[] args)
         {
             Settings = JSONDeserializer.ReadSettings(AppSettingsFilePath);
+
+            // Init default values for Current<thing> properties
             ChangeMenu(0);
             ChangeShape("Torus");
 
@@ -30,6 +31,7 @@ namespace RenderProgram
                 {
                     ExecuteMenuAction(CurrentMenu, menuClass, input);
                 }
+                // Ignoring all menu related exceptions (All are related to user input error)
                 catch (FormatException){ continue; }
                 catch (NullReferenceException) { continue; }
                 catch (ArgumentNullException) { continue; }
@@ -63,12 +65,12 @@ namespace RenderProgram
         {
             try
             {
+                // Find and invoke action method of menu
                 MethodInfo executeMethod = Type.GetType(menuClass).GetMethod("ExecuteMenuAction", BindingFlags.Public | BindingFlags.Static);
                 executeMethod.Invoke(null, new object[] { input });
             }
             catch (TargetInvocationException tiex)
             {
-
                 throw tiex.InnerException;
             }
         }
