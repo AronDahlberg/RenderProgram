@@ -16,7 +16,7 @@ namespace RenderProgram
         private static Stopwatch Watch { get; } = new();
         private static double A { get; set; } = 0.0;
         private static double B { get; set; } = 0.0;
-        private static double Alpha { get; set; } = 1.0;
+        private static double Alpha { get; set; } = Math.PI / 2;
         public static int ScreenWidth { get; set; }
         public static int ScreenHeight { get; set; }
         public static double AIntervall { get; set; }
