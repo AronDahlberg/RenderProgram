@@ -56,9 +56,6 @@ namespace RenderProgram.ShapeClasses
                     int xProjection = (int)(Render.ScreenWidth / 2 + (Render.ScreenHeight * focalLenght) * ooz * x * ConsoleAspectRatio);
                     int yProjection = (int)(Render.ScreenHeight / 2 - (Render.ScreenHeight * focalLenght) * ooz * y);
 
-                    //double luminance = cosPhi * cosTheta * sinB - cosA * cosTheta * sinPhi - sinA * sinTheta +
-                    //    cosB * (cosA * sinTheta - cosTheta * sinA * sinPhi);
-
                     double luminance = ((cosTheta * cosPhi * cosB * cosAlpha) - (((sinTheta * cosA) - (cosTheta * sinPhi * sinA)) * sinB * cosAlpha) + (cosTheta * cosPhi * sinB) + (((sinTheta * cosA) - (cosTheta * sinPhi * sinA)) * cosB) - (((sinTheta * sinA) + (cosTheta * sinPhi * cosA)) * sinAlpha));
 
                     if (xProjection >= 0 && xProjection < Render.ScreenWidth && yProjection >= 0 &&
