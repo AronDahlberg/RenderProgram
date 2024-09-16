@@ -30,10 +30,10 @@ namespace RenderProgram
                 {
                     ExecuteMenuAction(CurrentMenu, menuClass, input);
                 }
-                catch (FormatException ex)
-                {
-                     continue;
-                }
+                catch (FormatException){ continue; }
+                catch (NullReferenceException) { continue; }
+                catch (ArgumentNullException) { continue; }
+                catch (IndexOutOfRangeException) { continue; }
             }
 
             Console.Clear();
