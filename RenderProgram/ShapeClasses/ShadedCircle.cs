@@ -34,7 +34,7 @@
             {
                 double sinTheta = Math.Sin(theta), cosTheta = Math.Cos(theta);
 
-                for (double phi = 0; phi < 2 * Math.PI; phi += PhiIntervall)
+                for (double phi = 0; phi < Math.PI; phi += PhiIntervall)
                 {
                     double sinPhi = Math.Sin(phi), cosPhi = Math.Cos(phi);
 
