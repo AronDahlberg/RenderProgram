@@ -203,6 +203,8 @@ namespace RenderProgram
 
             outputString.Length--;
 
+            outputString.Append("\x1b[m");
+
             Console.Write(outputString.ToString());
         }
     }
