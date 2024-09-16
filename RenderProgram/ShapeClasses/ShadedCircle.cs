@@ -6,6 +6,9 @@
         public double Radii { get; set; } = 2;
         public double ThetaIntervallRaw { get; set; } = 0.7;
         public double PhiIntervallRaw { get; set; } = 0.2;
+        public double BackgroundColorRed { get; set; } = 100;
+        public double BackgroundColorGreen { get; set; } = 175;
+        public double BackgroundColorBlue { get; set; } = 225;
 
         public string[] RenderShape(double renderQuality, double a, double b, double alpha, double focalLenght)
         {
@@ -60,9 +63,9 @@
                         {
                             zbuffer[index] = ooz;
 
-                            int luminanceIndex = (int)((luminance + sqrt2) * 70.71); // 70.71 = <maximumLuminecence> / (2* Sqrt(2))
+                            int luminanceIndex = (int)((luminance + sqrt2) * 90.1561); // 90.1561 = <maximumLuminecence> / (2* Sqrt(2))
 
-                            output[index] = $"\x1b[48;2;{luminanceIndex + 55};{luminanceIndex + 20};{luminanceIndex}m \x1b[m";
+                            output[index] = $"\x1b[48;2;{luminanceIndex};{luminanceIndex};{luminanceIndex}m \x1b[48;2;{BackgroundColorRed};{BackgroundColorGreen};{BackgroundColorBlue}m";
                         }
                     }
                 }
