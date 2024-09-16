@@ -36,7 +36,7 @@ namespace RenderProgram
             CameraDistance = generalParameters.FirstOrDefault(parameter => parameter.Name == "CameraDistance").Value;
             CameraSpeed = generalParameters.FirstOrDefault(parameter => parameter.Name == "CameraSpeed").Value;
 
-            FrameTime = 1000.0 / Program.Settings.GeneralParameters.Parameters.FirstOrDefault(parameter => parameter.Name == "Fps").Value;
+            FrameTime = 1000.0 / generalParameters.FirstOrDefault(parameter => parameter.Name == "Fps").Value;
 
             string objectClass = $"{Program.ShapeNamespace}.{Program.CurrentShape.GetType().Name}";
             MethodInfo renderObjectMethod = Type.GetType(objectClass).GetMethod("RenderShape", BindingFlags.Public | BindingFlags.Instance);
