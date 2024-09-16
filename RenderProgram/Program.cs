@@ -26,7 +26,14 @@ namespace RenderProgram
 
                 string input = Console.ReadLine();
 
-                ExecuteMenuAction(CurrentMenu, menuClass, input);
+                try
+                {
+                    ExecuteMenuAction(CurrentMenu, menuClass, input);
+                }
+                catch (FormatException ex)
+                {
+                     continue;
+                }
             }
 
             Console.Clear();
@@ -54,8 +61,16 @@ namespace RenderProgram
         }
         private static void ExecuteMenuAction(Menu menu, string menuClass, string input)
         {
-            MethodInfo executeMethod = Type.GetType(menuClass).GetMethod("ExecuteMenuAction", BindingFlags.Public | BindingFlags.Static);
-            executeMethod.Invoke(null, new object[] { input });
+            try
+            {
+                MethodInfo executeMethod = Type.GetType(menuClass).GetMethod("ExecuteMenuAction", BindingFlags.Public | BindingFlags.Static);
+                executeMethod.Invoke(null, new object[] { input });
+            }
+            catch (TargetInvocationException tiex)
+            {
+
+                throw tiex.InnerException;
+            }
         }
         public static void ChangeMenu(int menuId)
         {
