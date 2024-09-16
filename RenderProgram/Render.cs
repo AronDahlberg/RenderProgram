@@ -14,6 +14,9 @@ namespace RenderProgram
         private static double FrameTime { get; set; }
         private static AutoResetEvent TimingSignal { get; } = new(false);
         private static Stopwatch Watch { get; } = new();
+        private static double A { get; set; } = 0.0;
+        private static double B { get; set; } = 0.0;
+        private static double Alpha { get; set; } = 1.0;
         public static int ScreenWidth { get; set; }
         public static int ScreenHeight { get; set; }
         public static double AIntervall { get; set; }
@@ -26,8 +29,6 @@ namespace RenderProgram
 
             var generalParameters = Program.Settings.GeneralParameters.Parameters;
 
-            double a = 0.0;
-            double b = 0.0;
             AIntervall = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedY").Value;
             BIntervall = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedX").Value;
 
@@ -55,10 +56,10 @@ namespace RenderProgram
                 ScreenWidth = Console.WindowWidth;
                 ScreenHeight = Console.WindowHeight;
 
-                a += AIntervall;
-                b += BIntervall;
+                A += AIntervall;
+                B += BIntervall;
 
-                object result = renderObjectMethod.Invoke(Program.CurrentShape, new object[] { renderQuality, a, b, focalLenght });
+                object result = renderObjectMethod.Invoke(Program.CurrentShape, new object[] { renderQuality, A, B, Alpha, focalLenght });
 
                 RenderFrame((result as string[]).AsSpan());
             }
@@ -104,6 +105,12 @@ namespace RenderProgram
                             CameraDistance -= CameraSpeed / 100; break;
                         case ConsoleKey.S:
                             CameraDistance += CameraSpeed / 100; break;
+                        case ConsoleKey.A:
+                            Alpha += CameraSpeed / 200;
+                            break;
+                        case ConsoleKey.D:
+                            Alpha -= CameraSpeed / 200;
+                            break;
                     }
                 }
 

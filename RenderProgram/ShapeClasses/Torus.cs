@@ -14,7 +14,7 @@ namespace RenderProgram.ShapeClasses
         public double Radii2 { get; set; } = 2;
         public double ThetaIntervallRaw { get; set; } = 0.7;
         public double PhiIntervallRaw { get; set; } = 0.2;
-        public string[] RenderShape(double renderQuality, double a, double b, double focalLenght)
+        public string[] RenderShape(double renderQuality, double a, double b, double alpha,  double focalLenght)
         {
             // Larger renderQuality = more plotted points
             double ThetaIntervall = ThetaIntervallRaw / renderQuality;
@@ -32,6 +32,8 @@ namespace RenderProgram.ShapeClasses
 
             double sinA = Math.Sin(a), cosA = Math.Cos(a);
             double sinB = Math.Sin(b), cosB = Math.Cos(b);
+
+            double sinAlpha = Math.Sin(alpha), cosAlpha = Math.Cos(alpha);
 
             double sqrt2 = Math.Sqrt(2);
 
@@ -54,9 +56,10 @@ namespace RenderProgram.ShapeClasses
                     int xProjection = (int)(Render.ScreenWidth / 2 + (Render.ScreenHeight * focalLenght) * ooz * x * ConsoleAspectRatio);
                     int yProjection = (int)(Render.ScreenHeight / 2 - (Render.ScreenHeight * focalLenght) * ooz * y);
 
-                    double luminance = cosPhi * cosTheta * sinB - cosA * cosTheta * sinPhi - sinA * sinTheta +
-                        cosB * (cosA * sinTheta - cosTheta * sinA * sinPhi);
+                    //double luminance = cosPhi * cosTheta * sinB - cosA * cosTheta * sinPhi - sinA * sinTheta +
+                    //    cosB * (cosA * sinTheta - cosTheta * sinA * sinPhi);
 
+                    double luminance = ((cosTheta * cosPhi * cosB * cosAlpha) - (((sinTheta * cosA) - (cosTheta * sinPhi * sinA)) * sinB * cosAlpha) + (cosTheta * cosPhi * sinB) + (((sinTheta * cosA) - (cosTheta * sinPhi * sinA)) * cosB) - (((sinTheta * sinA) + (cosTheta * sinPhi * cosA)) * sinAlpha));
 
                     if (xProjection >= 0 && xProjection < Render.ScreenWidth && yProjection >= 0 &&
                         yProjection < Render.ScreenHeight)
