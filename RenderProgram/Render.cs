@@ -7,16 +7,16 @@ namespace RenderProgram
     internal static class Render
     {
         private static bool IsRunning { get; set; }
-        private static double FrameTime { get; set; }
+        private static double? FrameTime { get; set; }
         private static AutoResetEvent TimingSignal { get; } = new(false);
         private static Stopwatch Watch { get; } = new();
-        private static double A { get; set; } = 0.0;
-        private static double B { get; set; } = 0.0;
-        private static double Alpha { get; set; } = Math.PI / 2;
+        private static double? A { get; set; } = 0.0;
+        private static double? B { get; set; } = 0.0;
+        private static double? Alpha { get; set; } = Math.PI / 2;
         public static int ScreenWidth { get; set; }
         public static int ScreenHeight { get; set; }
-        public static double AIntervall { get; set; }
-        public static double BIntervall { get; set; }
+        public static double? AIntervall { get; set; }
+        public static double? BIntervall { get; set; }
         public static double CameraDistance { get; set; }
         public static double CameraSpeed { get; set; }
         public static async void Run()
@@ -24,24 +24,24 @@ namespace RenderProgram
             IsRunning = true;
 
             // Find all parameters from the json file
-            var generalParameters = Program.Settings.GeneralParameters.Parameters;
+            var generalParameters = Program.Settings.GeneralParameters?.Parameters;
 
-            AIntervall = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedY").Value;
-            BIntervall = generalParameters.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedX").Value;
+            AIntervall = generalParameters?.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedY")?.Value;
+            BIntervall = generalParameters?.FirstOrDefault(parameter => parameter.Name == "AutoRotationSpeedX")?.Value;
 
-            double renderQuality = generalParameters.FirstOrDefault(parameter => parameter.Name == "RenderQuality").Value;
+            double? renderQuality = generalParameters?.FirstOrDefault(parameter => parameter.Name == "RenderQuality")?.Value;
 
-            CameraDistance = generalParameters.FirstOrDefault(parameter => parameter.Name == "CameraDistance").Value;
-            CameraSpeed = generalParameters.FirstOrDefault(parameter => parameter.Name == "CameraSpeed").Value;
+            CameraDistance = generalParameters?.FirstOrDefault(parameter => parameter.Name == "CameraDistance")?.Value ?? 0;
+            CameraSpeed = generalParameters?.FirstOrDefault(parameter => parameter.Name == "CameraSpeed")?.Value ?? 0;
 
-            FrameTime = 1000.0 / generalParameters.FirstOrDefault(parameter => parameter.Name == "Fps").Value;
+            FrameTime = 1000.0 / generalParameters?.FirstOrDefault(parameter => parameter.Name == "Fps")?.Value;
 
-            string objectClass = $"{Program.ShapeNamespace}.{Program.CurrentShape.GetType().Name}";
-            MethodInfo renderObjectMethod = Type.GetType(objectClass).GetMethod("RenderShape", BindingFlags.Public | BindingFlags.Instance);
-            MethodInfo calculateFocalLenghtMethod = Type.GetType(objectClass).GetMethod("CalculateFocalLenght", BindingFlags.Public | BindingFlags.Instance);
+            string objectClass = $"{Program.ShapeNamespace}.{Program.CurrentShape?.GetType().Name}";
+            MethodInfo? renderObjectMethod = Type.GetType(objectClass)?.GetMethod("RenderShape", BindingFlags.Public | BindingFlags.Instance);
+            MethodInfo? calculateFocalLenghtMethod = Type.GetType(objectClass)?.GetMethod("CalculateFocalLenght", BindingFlags.Public | BindingFlags.Instance);
 
 
-            double? focalLenght = calculateFocalLenghtMethod.Invoke(Program.CurrentShape, null) as double?;
+            double? focalLenght = calculateFocalLenghtMethod?.Invoke(Program.CurrentShape, null) as double?;
 
             Task handleInputTask = Task.Run(() => HandleInput());
             Task timingTask = Task.Run(() => FPSControlLoop());
@@ -58,7 +58,7 @@ namespace RenderProgram
                 B += BIntervall;
 
                 // Render object and frame
-                object result = renderObjectMethod.Invoke(Program.CurrentShape, new object[] { renderQuality, A, B, Alpha, focalLenght });
+                object? result = renderObjectMethod?.Invoke(Program.CurrentShape, [renderQuality, A, B, Alpha, focalLenght]);
 
                 PrintFrame((result as string[]).AsSpan());
             }
@@ -81,7 +81,7 @@ namespace RenderProgram
                 // Cap the FPS
                 Watch.Stop();
                 double elapsedMilliseconds = Watch.Elapsed.TotalMilliseconds;
-                double sleepTime = FrameTime - elapsedMilliseconds;
+                double? sleepTime = FrameTime - elapsedMilliseconds;
 
                 if (sleepTime > 0)
                 {

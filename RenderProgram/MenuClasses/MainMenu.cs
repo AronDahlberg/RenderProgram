@@ -12,7 +12,7 @@
 
                 case 1: Render.Run(); break;
 
-                default: Program.ChangeMenu(Program.CurrentMenu.Text.Options.FirstOrDefault(menu => menu.Id == command).MenuSwitch); break;
+                default: Program.ChangeMenu(Program.CurrentMenu?.Text?.Options?.FirstOrDefault(menu => menu.Id == command)?.MenuSwitch); break;
             }
         }
     }
